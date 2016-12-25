@@ -58,7 +58,8 @@ namespace NodeEditorFramework
 						continue;
 					}
 
-					if (nodeKnob is NodeInput)
+					//TODO reimplement this
+					/*if (nodeKnob is NodeInput)
 					{
 						NodeInput input = nodeKnob as NodeInput;
 						if (input.connection != null && input.connection.body == null)
@@ -79,7 +80,7 @@ namespace NodeEditorFramework
 								conCnt--;
 							}
 						}
-					}
+					}*/
 				}
 			}
 

@@ -65,10 +65,11 @@ namespace NodeEditorFramework
 			return nodes.Keys.Single<Node> ((Node node) => node.GetType () == typeof (T)) as T;
 		}
 
+		//TODO Reimplement this using ConnectionRules
 		/// <summary>
 		/// Gets the compatible nodes that have atleast one NodeInput that can connect to the given nodeOutput
 		/// </summary>
-		public static List<Node> getCompatibleNodes (NodeOutput nodeOutput)
+		/*public static List<Node> getCompatibleNodes (NodeOutput nodeOutput)
 		{
 			if (nodeOutput == null)
 				throw new ArgumentNullException ("nodeOutput");
@@ -88,7 +89,7 @@ namespace NodeEditorFramework
 				}
 			}
 			return compatibleNodes;
-		}
+		}*/
 	}
 
 	/// <summary>

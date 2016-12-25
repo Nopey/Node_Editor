@@ -21,8 +21,9 @@ namespace NodeEditorFramework
 		public virtual void OnMoveNode (Node node) {}
 		public virtual void OnAddNodeKnob (NodeKnob knob) {}
 		// Connection
-		public virtual void OnAddConnection (NodeInput input) {}
-		public virtual void OnRemoveConnection (NodeInput input) {}
+		//TODO figure out what used these and reimplement it
+		//public virtual void OnAddConnection (NodeInput input) {}
+		//public virtual void OnRemoveConnection (NodeInput input) {}
 	}
 
 	public static partial class NodeEditorCallbacks
@@ -175,6 +176,7 @@ namespace NodeEditorFramework
 
 		#endregion
 
+		/*
 		#region Connection (2)
 
 		public static Action<NodeInput> OnAddConnection;
@@ -206,6 +208,6 @@ namespace NodeEditorFramework
 		}
 
 		#endregion
-
+//*/
 	}
 }

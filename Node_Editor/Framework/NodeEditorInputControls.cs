@@ -18,12 +18,12 @@ namespace NodeEditorFramework
 		private static void FillAddNodes (NodeEditorInputInfo inputInfo, GenericMenu canvasContextMenu) 
 		{ // Show all nodes, and if a connection is drawn, only compatible nodes to auto-connect
 			NodeEditorState state = inputInfo.editorState;
-			List<Node> displayedNodes = state.connectOutput != null? NodeTypes.getCompatibleNodes (state.connectOutput) : NodeTypes.nodes.Keys.ToList ();
-			foreach (Node compatibleNode in displayedNodes)
-			{
-				if (NodeCanvasManager.CheckCanvasCompability (compatibleNode, inputInfo.editorState.canvas.GetType ()))
-					canvasContextMenu.AddItem (new GUIContent ("Add " + NodeTypes.nodes[compatibleNode].adress), false, CreateNodeCallback, new NodeEditorInputInfo (compatibleNode.GetID, state));
-			}
+			//List<Node> displayedNodes = state.partialConnection != null? NodeTypes.getCompatibleNodes (state.partialConnection) : NodeTypes.nodes.Keys.ToList ();
+			//foreach (Node compatibleNode in displayedNodes)
+			//{
+			//	if (NodeCanvasManager.CheckCanvasCompability (compatibleNode, inputInfo.editorState.canvas.GetType ()))
+			//		canvasContextMenu.AddItem (new GUIContent ("Add " + NodeTypes.nodes[compatibleNode].adress), false, CreateNodeCallback, new NodeEditorInputInfo (compatibleNode.GetID, state));
+			//}
 		}
 
 		private static void CreateNodeCallback (object infoObj)
@@ -33,8 +33,9 @@ namespace NodeEditorFramework
 				throw new UnityException ("Callback Object passed by context is not of type NodeEditorInputInfo!");
 
 			callback.SetAsCurrentEnvironment ();
-			Node.Create (callback.message, NodeEditor.ScreenToCanvasSpace (callback.inputPos), callback.editorState.connectOutput);
-			callback.editorState.connectOutput = null;
+			//TODO Reimplement Connection creation
+			//Node.Create (callback.message, NodeEditor.ScreenToCanvasSpace (callback.inputPos), callback.editorState.partialConnection);
+			callback.editorState.partialConnection = null;
 			NodeEditor.RepaintClients ();
 		}
 
@@ -56,15 +57,16 @@ namespace NodeEditorFramework
 		[ContextEntryAttribute (ContextType.Node, "Duplicate Node")]
 		private static void DuplicateNode (NodeEditorInputInfo inputInfo) 
 		{
+			/*TODO Reimplement duplication
 			inputInfo.SetAsCurrentEnvironment ();
 			NodeEditorState state = inputInfo.editorState;
 			if (state.focusedNode != null) 
 			{ // Create new node of same type
-				Node duplicatedNode = Node.Create (state.focusedNode.GetID, NodeEditor.ScreenToCanvasSpace (inputInfo.inputPos), state.connectOutput);
+				Node duplicatedNode = Node.Create (state.focusedNode.GetID, NodeEditor.ScreenToCanvasSpace (inputInfo.inputPos), state.partialConnection);
 				state.selectedNode = state.focusedNode = duplicatedNode;
-				state.connectOutput = null;
+				state.partialConnection = null;
 				inputInfo.inputEvent.Use ();
-			}
+			}*/
 		}
 
 		#endregion
@@ -200,35 +202,38 @@ namespace NodeEditorFramework
 			NodeEditorState state = inputInfo.editorState;
 			if (inputInfo.inputEvent.button == 0 && state.focusedNodeKnob != null)
 			{ // Left-Clicked on a NodeKnob, so check if any of them is a nodeInput or -Output
-				if (state.focusedNodeKnob is NodeOutput)
+				//TODO node connecting
+				if (state.focusedNodeKnob is ConnectionKnob)
 				{ // Output clicked -> Draw new connection from it
-					state.connectOutput = (NodeOutput)state.focusedNodeKnob;
+					state.partialConnection = (ConnectionKnob)state.focusedNodeKnob;
 					inputInfo.inputEvent.Use ();
 				}
+				/*TODO reimplement this, by testing if clicked knob has a single connection, and doesn't allow for creation of a new one
 				else if (state.focusedNodeKnob is NodeInput)
 				{ // Input clicked -> Loose and edit connection from it
 					NodeInput clickedInput = (NodeInput)state.focusedNodeKnob;
 					if (clickedInput.connection != null)
 					{
-						state.connectOutput = clickedInput.connection;
+						state.partialConnection = clickedInput.connection;
 						clickedInput.RemoveConnection ();
 						inputInfo.inputEvent.Use ();
 					}
-				}
+				}//*/
 			}
 		}
 
 		[EventHandlerAttribute (EventType.MouseUp)]
 		private static void HandleApplyConnection (NodeEditorInputInfo inputInfo) 
 		{
+			/*TODO Connection Creation
 			NodeEditorState state = inputInfo.editorState;
-			if (inputInfo.inputEvent.button == 0 && state.connectOutput != null && state.focusedNode != null && state.focusedNodeKnob != null && state.focusedNodeKnob is NodeInput) 
+			if (inputInfo.inputEvent.button == 0 && state.partialConnection != null && state.focusedNode != null && state.focusedNodeKnob != null && state.focusedNodeKnob is NodeInput) 
 			{ // An input was clicked, it'll will now be connected
 				NodeInput clickedInput = state.focusedNodeKnob as NodeInput;
-				clickedInput.TryApplyConnection (state.connectOutput);
+				clickedInput.TryApplyConnection (state.partialConnection);
 				inputInfo.inputEvent.Use ();
 			}
-			state.connectOutput = null;
+			state.partialConnection = null;*/
 		}
 
 		#endregion

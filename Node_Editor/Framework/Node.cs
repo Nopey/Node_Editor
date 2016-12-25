@@ -15,13 +15,12 @@ namespace NodeEditorFramework
 		public List<NodeKnob> nodeKnobs = new List<NodeKnob> ();
 
 		// Calculation graph
-		[SerializeField]
-		public List<NodeInput> Inputs = new List<NodeInput>();
-		[SerializeField]
-		public List<NodeOutput> Outputs = new List<NodeOutput>();
-		[HideInInspector]
+		/*[NonSerialized]
+		public List<NodeKnob> Inputs = new List<NodeKnob>();
 		[NonSerialized]
-		internal bool calculated = true;
+		public List<NodeKnob> Outputs = new List<NodeKnob>();*/
+		//[HideInInspector,NonSerialized]
+		//internal bool calculated = true;
 
 		public Color backgroundColor = Color.white;
 		private Color lastBGColor = Color.white;
@@ -53,7 +52,8 @@ namespace NodeEditorFramework
 				throw new UnityException ("The Node " + name + " does not exist on the Canvas " + NodeEditor.curNodeCanvas.name + "!");
 			NodeEditorCallbacks.IssueOnDeleteNode (this);
 			NodeEditor.curNodeCanvas.nodes.Remove (this);
-			for (int outCnt = 0; outCnt < Outputs.Count; outCnt++) 
+			//TODO reimplement connection destruction upon deletion of node (but not in this class)
+			/*for (int outCnt = 0; outCnt < Outputs.Count; outCnt++) 
 			{
 				NodeOutput output = Outputs [outCnt];
 				while (output.connections.Count != 0)
@@ -66,7 +66,7 @@ namespace NodeEditorFramework
 				if (input.connection != null)
 					input.connection.connections.Remove (input);
 				DestroyImmediate (input, true);
-			}
+			}*/
 			for (int knobCnt = 0; knobCnt < nodeKnobs.Count; knobCnt++) 
 			{ // Inputs/Outputs need specific treatment, unfortunately
 				if (nodeKnobs[knobCnt] != null)
@@ -74,8 +74,8 @@ namespace NodeEditorFramework
 			}
 			DestroyImmediate (this, true);
 		}
-
-		/// <summary>
+		//TODO Reimplement Creation of Nodes
+		/*/// <summary>
 		/// Create the a Node of the type specified by the nodeID at position
 		/// </summary>
 		public static Node Create (string nodeID, Vector2 position) 
@@ -112,18 +112,20 @@ namespace NodeEditorFramework
 			NodeEditorCallbacks.IssueOnAddNode (node);
 
 			return node;
-		}
+		}*/
 
 		/// <summary>
 		/// Makes sure this Node has migrated from the previous save version of NodeKnobs to the current mixed and generic one
 		/// </summary>
+		//TODO Consider reimplementing it
 		internal void CheckNodeKnobMigration () 
 		{ // TODO: Migration from previous NodeKnob system; Remove later on
-			if (nodeKnobs.Count == 0 && (Inputs.Count != 0 || Outputs.Count != 0)) 
+			/*if (nodeKnobs.Count == 0 && (Inputs.Count != 0 || Outputs.Count != 0)) 
 			{
 				nodeKnobs.AddRange (Inputs.Cast<NodeKnob> ());
 				nodeKnobs.AddRange (Outputs.Cast<NodeKnob> ());
 			}
+			//*/
 		}
 
 		#endregion
@@ -162,6 +164,8 @@ namespace NodeEditorFramework
 
 		#endregion
 
+		//TODO Implement CR_NoRecursion, but make sure that it allows recursion if atleast a single Node in the loop allows for recursion
+		/*
 		#region Node Type Properties
 
 		/// <summary>
@@ -175,6 +179,7 @@ namespace NodeEditorFramework
 		public virtual bool ContinueCalculation { get { return true; } }
 
 		#endregion
+		//*/
 
 		#region Protected Callbacks
 
@@ -186,12 +191,14 @@ namespace NodeEditorFramework
 		/// <summary>
 		/// Callback when the NodeInput was assigned a new connection
 		/// </summary>
-		protected internal virtual void OnAddInputConnection (NodeInput input) {}
+		//TODO figure out what used OnAddInputConnection and reimplement that
+		//protected internal virtual void OnAddInputConnection (NodeInput input) {}
 
 		/// <summary>
 		/// Callback when the NodeOutput was assigned a new connection (the last in the list)
 		/// </summary>
-		protected internal virtual void OnAddOutputConnection (NodeOutput output) {}
+		//TODO figure out what used OnAddOutputConnection and reimplement that
+		//protected internal virtual void OnAddOutputConnection (NodeOutput output) {}
 
 		#endregion
 
@@ -213,7 +220,6 @@ namespace NodeEditorFramework
 
         #endregion
 
-        #endregion
 
         #region Drawing
 
@@ -274,7 +280,7 @@ namespace NodeEditorFramework
 			CheckNodeKnobMigration ();
 			if (Event.current.type != EventType.Repaint)
 				return;
-			for (int outCnt = 0; outCnt < Outputs.Count; outCnt++) 
+			/*for (int outCnt = 0; outCnt < Outputs.Count; outCnt++) 
 			{
 				NodeOutput output = Outputs [outCnt];
 				Vector2 startPos = output.GetGUIKnob ().center;
@@ -288,7 +294,7 @@ namespace NodeEditorFramework
 					NodeEditorGUI.OptimiseBezierDirections (startPos, ref startDir, endPos, ref endDir);
 					NodeEditorGUI.DrawConnection (startPos, startDir, endPos, endDir, output.typeData.Color);
 				}
-			}
+			}*/
 		}
 
 		private void AssureNodeBGStyle ()
@@ -304,7 +310,7 @@ namespace NodeEditorFramework
 
 		#endregion
 		
-		#region Calculation Utility
+		/*#region Calculation Utility
 		
 		/// <summary>
 		/// Checks if there are no unassigned and no null-value inputs.
@@ -467,15 +473,18 @@ namespace NodeEditorFramework
 		}
 
 		#endregion
+		//*/
 
 		#region Node Utility
+		//TODO reimplement all of utility with cr_directional
 
 		/// <summary>
 		/// Recursively checks whether this node is a child of the other node
 		/// </summary>
 		public bool isChildOf (Node otherNode)
 		{
-			if (otherNode == null || otherNode == this)
+			return false;
+			/*if (otherNode == null || otherNode == this)
 				return false;
 			if (BeginRecursiveSearchLoop ()) return false;
 			for (int cnt = 0; cnt < Inputs.Count; cnt++) 
@@ -494,7 +503,7 @@ namespace NodeEditorFramework
 				}
 			}
 			EndRecursiveSearchLoop ();
-			return false;
+			return false;*/
 		}
 
 		/// <summary>
@@ -502,6 +511,7 @@ namespace NodeEditorFramework
 		/// </summary>
 		internal bool isInLoop ()
 		{
+			/*
 			if (BeginRecursiveSearchLoop ()) return this == startRecursiveSearchNode;
 			for (int cnt = 0; cnt < Inputs.Count; cnt++) 
 			{
@@ -512,7 +522,7 @@ namespace NodeEditorFramework
 					return true;
 				}
 			}
-			EndRecursiveSearchLoop ();
+			EndRecursiveSearchLoop ();*/
 			return false;
 		}
 
@@ -523,6 +533,7 @@ namespace NodeEditorFramework
 		/// </summary>
 		internal bool allowsLoopRecursion (Node otherNode)
 		{
+			/*
 			if (AllowRecursion)
 				return true;
 			if (otherNode == null)
@@ -537,7 +548,7 @@ namespace NodeEditorFramework
 					return true;
 				}
 			}
-			EndRecursiveSearchLoop ();
+			EndRecursiveSearchLoop ();*/
 			return false;
 		}
 
@@ -547,7 +558,7 @@ namespace NodeEditorFramework
 		/// </summary>
 		public void ClearCalculation () 
 		{
-			if (BeginRecursiveSearchLoop ()) return;
+			/*if (BeginRecursiveSearchLoop ()) return;
 			calculated = false;
 			for (int outCnt = 0; outCnt < Outputs.Count; outCnt++)
 			{
@@ -555,12 +566,13 @@ namespace NodeEditorFramework
 				for (int conCnt = 0; conCnt < output.connections.Count; conCnt++)
 					output.connections [conCnt].body.ClearCalculation ();
 			}
-			EndRecursiveSearchLoop ();
+			EndRecursiveSearchLoop ();*/
 		}
 
 		#region Recursive Search Helpers
+		//TODO reimplement entire region with CR_Directional
 
-		[NonSerialized] private List<Node> recursiveSearchSurpassed;
+		/*[NonSerialized] private List<Node> recursiveSearchSurpassed;
 		[NonSerialized] private Node startRecursiveSearchNode; // Temporary start node for recursive searches
 
 		/// <summary>
@@ -600,7 +612,7 @@ namespace NodeEditorFramework
 			recursiveSearchSurpassed = null;
 			startRecursiveSearchNode = null;
 		}
-
+*/
 		#endregion
 
 		#endregion

@@ -15,7 +15,7 @@ namespace NodeEditorFramework
 	/// Abstract knob on the side of an node that handles positioning drawing with a texture and even labeling and positioning calls
 	/// </summary>
 	[System.Serializable]
-	public partial class NodeKnob : ScriptableObject
+	public class NodeKnob : ScriptableObject
 	{
 		// Main
 		public Node body;
@@ -30,6 +30,7 @@ namespace NodeEditorFramework
 		public float sidePosition = 0; // Position on the side, top->bottom, left->right
 		public float sideOffset = 0; // Offset from the side
 
+
 		/// <summary>
 		/// Inits the base node and subscribes it in the node body for drawing and requests to load the texture through 'ReloadTexture'
 		/// </summary>
@@ -39,6 +40,7 @@ namespace NodeEditorFramework
 			side = nodeSide;
 			sidePosition = nodeSidePosition;
 			name = knobName;
+			//this.connectionRules = connectionRules == null? new List<ConnectionRule> () : connectionRules;
 			nodeBody.nodeKnobs.Add (this);
 			ReloadKnobTexture ();
 		}
@@ -103,7 +105,7 @@ namespace NodeEditorFramework
 		}
 
 		/// <summary>
-		/// Defines an reload. This should assign knobTexture and return the path to knobTexture.
+		/// Defines a reload. This should assign knobTexture and return the path to knobTexture.
 		/// </summary>
 		protected virtual void ReloadTexture () 
 		{
@@ -137,6 +139,7 @@ namespace NodeEditorFramework
 		{
 			Rect knobRect = GetGUIKnob ();
 			GUI.DrawTexture (knobRect, knobTexture);
+			//TODO draw ConnectionRules, and color the knob bg according to its thingamajig
 		}
 
 		/// <summary>

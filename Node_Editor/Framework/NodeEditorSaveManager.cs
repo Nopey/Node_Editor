@@ -367,7 +367,7 @@ namespace NodeEditorFramework
 				node.Inputs = new List<NodeInput> ();
 				node.Outputs = new List<NodeOutput> ();
 			}
-		}*/
+		}
 
 
 		/// <summary>
@@ -389,7 +389,7 @@ namespace NodeEditorFramework
 						node.Outputs.Add (knob as NodeOutput);
 				}
 			}
-		}
+		}*/
 
 		#endregion
 
@@ -399,6 +399,7 @@ namespace NodeEditorFramework
 		/// Creates a working copy of the specified nodeCanvas, and optionally also of it's associated editorStates.
 		/// This breaks the link of this object to any stored assets and references. That means, that all changes to this object will have to be explicitly saved.
 		/// </summary>
+		//TODO Figure this out and rewrite it
 		public static NodeCanvas CreateWorkingCopy (NodeCanvas nodeCanvas, bool editorStates) 
 		{
 			nodeCanvas.Validate ();
@@ -433,8 +434,8 @@ namespace NodeEditorFramework
 				clonedNode.CopyScriptableObjects ((ScriptableObject so) => ReplaceSO (allSOs, clonedSOs, so));
 
 				// We're going to restore these from NodeKnobs, no need to Replace muliple times
-				clonedNode.Inputs = new List<NodeInput> ();
-				clonedNode.Outputs = new List<NodeOutput> ();
+				//clonedNode.Inputs = new List<NodeInput> ();
+				//clonedNode.Outputs = new List<NodeOutput> ();
 				for (int knobCnt = 0; knobCnt < clonedNode.nodeKnobs.Count; knobCnt++) 
 				{ // Clone generic NodeKnobs
 					NodeKnob knob = clonedNode.nodeKnobs[knobCnt] = ReplaceSO (allSOs, clonedSOs, clonedNode.nodeKnobs[knobCnt]);
@@ -442,10 +443,11 @@ namespace NodeEditorFramework
 					// Replace additional scriptableObjects in the NodeKnob
 					knob.CopyScriptableObjects ((ScriptableObject so) => ReplaceSO (allSOs, clonedSOs, so));
 					// Add it into Inputs/Outputs again
-					if (knob is NodeInput)
+					//TODO over here
+					/*if (knob is NodeInput)
 						clonedNode.Inputs.Add (knob as NodeInput);
 					else if (knob is NodeOutput) 
-						clonedNode.Outputs.Add (knob as NodeOutput);
+						clonedNode.Outputs.Add (knob as NodeOutput);*/
 				}
 			}
 

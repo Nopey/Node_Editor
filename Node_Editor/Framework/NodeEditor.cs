@@ -72,7 +72,7 @@ namespace NodeEditorFramework
 		private static void setupBaseFramework ()
 		{
 			CheckEditorPath ();
-			Calculator = new DefaultNodeCalculator ();
+			//Calculator = new DefaultNodeCalculator ();
 			// Init Resource system. Can be called anywhere else, too, if it's needed before.
 			ResourceManager.SetDefaultResourcePath (editorPath + "Resources/");
 
@@ -210,16 +210,17 @@ namespace NodeEditorFramework
 				RepaintClients ();
 			}
 
-			if (curEditorState.connectOutput != null)
+			if (curEditorState.partialConnection != null)
 			{ // Draw the currently drawn connection
-				NodeOutput output = curEditorState.connectOutput;
+				NodeKnob output = curEditorState.partialConnection;
 				Vector2 startPos = output.GetGUIKnob ().center;
 				Vector2 startDir = output.GetDirection ();
 				Vector2 endPos = Event.current.mousePosition;
 				Vector2 endDir = -startDir; // NodeEditorGUI.GetSecondConnectionVector (startPos, endPos, startDir); <- causes unpleasant jumping when switching polarity
 
 				NodeEditorGUI.OptimiseBezierDirections (startPos, ref startDir, endPos, ref endDir);
-				NodeEditorGUI.DrawConnection (startPos, startDir, endPos, endDir, output.typeData.Color);
+				//TODO Poll Knob for color..
+				NodeEditorGUI.DrawConnection (startPos, startDir, endPos, endDir, Color.red);
 				RepaintClients ();
 			}
 

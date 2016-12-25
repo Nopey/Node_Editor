@@ -23,7 +23,7 @@ namespace NodeEditorFramework
 		public float zoom = 1; // zoom; Ranges in 0.2er-steps from 0.6-2.0; applied 1/zoom;
 
 		// Current Action
-		[NonSerialized] public NodeOutput connectOutput; // connection this output
+		[NonSerialized] public ConnectionKnob partialConnection; // for drawing connections
 		[NonSerialized] public bool dragNode; // node dragging
 		[NonSerialized] public bool panWindow; // window panning
 		[NonSerialized] public Vector2 dragStart; // start mouse position for both node dragging and window panning
