@@ -9,16 +9,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0e0c2324a9ab1224ebe3edad393e3544, type: 3}
-  m_Name: LastSession
+  m_Name: DispTest
   m_EditorClassIdentifier: 
-  saveName: New Calculation Canvas
-  savePath: 
+  saveName: DispTest
+  savePath: Assets/Plugins/Node_Editor/Resources/Saves/DispTest.asset
   livesInScene: 0
   nodes: []
-  connections: []
   editorStates:
-  - {fileID: 114887146887030000}
---- !u!114 &114887146887030000
+  - {fileID: 114610895287933124}
+--- !u!114 &114610895287933124
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -29,9 +28,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6ab6487237ff124ea4c2aa5de9ce3fb, type: 3}
   m_Name: MainEditorState
   m_EditorClassIdentifier: 
-  canvas: {fileID: 11400000}
+  canvas: {fileID: 0}
   parentEditor: {fileID: 0}
   drawing: 1
   selectedNode: {fileID: 0}
-  panOffset: {x: 0, y: 0}
+  panOffset: {x: -560, y: 85}
   zoom: 1

@@ -157,6 +157,7 @@ namespace NodeEditorFramework
 		/// <summary>
 		/// Gets the second connection vector that matches best, accounting for positions
 		/// </summary>
+		//TODO Should it be used or destroyed? find out next time on DBZ
 		internal static Vector2 GetSecondConnectionVector (Vector2 startPos, Vector2 endPos, Vector2 firstVector) 
 		{
 			if (firstVector.x != 0 && firstVector.y == 0)

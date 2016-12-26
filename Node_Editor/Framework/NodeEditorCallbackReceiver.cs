@@ -120,6 +120,7 @@ namespace NodeEditorFramework
 		public static Action<Node> OnAddNode;
 		public static void IssueOnAddNode (Node node) 
 		{
+			Debug.Log ("Created eh?");
 			if (OnAddNode != null)
 				OnAddNode.Invoke (node);
 			for (int cnt = 0; cnt < receiverCount; cnt++) 

@@ -33,7 +33,7 @@ namespace NodeEditorFramework
 		/// </summary>
 		protected internal void InitBase () 
 		{
-			NodeEditor.Calculator.RecalculateFrom (this);
+			//NodeEditor.Calculator.RecalculateFrom (this);
 			if (!NodeEditor.curNodeCanvas.nodes.Contains (this))
 				NodeEditor.curNodeCanvas.nodes.Add (this);
 			#if UNITY_EDITOR
@@ -82,13 +82,14 @@ namespace NodeEditorFramework
 		{
 			return Create (nodeID, position, null);
 		}
-
+//*/
 		/// <summary>
 		/// Create the a Node of the type specified by the nodeID at position
 		/// Auto-connects the passed connectingOutput if not null to the first compatible input
 		/// </summary>
-		public static Node Create (string nodeID, Vector2 position, NodeOutput connectingOutput) 
+		public static Node Create (string nodeID, Vector2 position, NodeKnob connectingOutput=null) 
 		{
+			Debug.Log ("Duplicated, am I?");
 			Node node = NodeTypes.getDefaultNode (nodeID);
 			if (node == null)
 				throw new UnityException ("Cannot create Node with id " + nodeID + " as no such Node type is registered!");
@@ -100,19 +101,20 @@ namespace NodeEditorFramework
 
 			node.InitBase ();
 
-			if (connectingOutput != null)
+			//TODO Reimplement auto connection of output
+			/*if (connectingOutput != null)
 			{ // Handle auto-connection and link the output to the first compatible input
-				foreach (NodeInput input in node.Inputs)
+				foreach (NodeKnob input in node.nodeKnobs)
 				{
 					if (input.TryApplyConnection (connectingOutput))
 						break;
 				}
-			}
+			}*/
 
 			NodeEditorCallbacks.IssueOnAddNode (node);
 
 			return node;
-		}*/
+		}//*/
 
 		/// <summary>
 		/// Makes sure this Node has migrated from the previous save version of NodeKnobs to the current mixed and generic one
@@ -272,15 +274,18 @@ namespace NodeEditorFramework
 				nodeKnobs[knobCnt].DrawKnob ();
 		}
 
+
+		/*
 		/// <summary>
 		/// Draws the node curves
+		/// No longer used, now is in NodeEditor
 		/// </summary>
 		protected internal virtual void DrawConnections () 
 		{
 			CheckNodeKnobMigration ();
 			if (Event.current.type != EventType.Repaint)
 				return;
-			/*for (int outCnt = 0; outCnt < Outputs.Count; outCnt++) 
+			for (int outCnt = 0; outCnt < Outputs.Count; outCnt++) 
 			{
 				NodeOutput output = Outputs [outCnt];
 				Vector2 startPos = output.GetGUIKnob ().center;
@@ -294,8 +299,8 @@ namespace NodeEditorFramework
 					NodeEditorGUI.OptimiseBezierDirections (startPos, ref startDir, endPos, ref endDir);
 					NodeEditorGUI.DrawConnection (startPos, startDir, endPos, endDir, output.typeData.Color);
 				}
-			}*/
-		}
+			}
+		}*/
 
 		private void AssureNodeBGStyle ()
 		{
@@ -615,6 +620,7 @@ namespace NodeEditorFramework
 */
 		#endregion
 
+		#endregion
 		#endregion
 	}
 }

@@ -29,6 +29,10 @@ namespace NodeEditorFramework
 		public NodeSide side;
 		public float sidePosition = 0; // Position on the side, top->bottom, left->right
 		public float sideOffset = 0; // Offset from the side
+		/// <summary>
+		/// The color of the knob background.
+		/// </summary>
+		public Color backgroundColor = Color.white;
 
 
 		/// <summary>
@@ -55,6 +59,7 @@ namespace NodeEditorFramework
 
 		/// <summary>
 		/// Checks the texture and requests to load it again if necessary
+		/// Also makes sure the knob is on a side of the node
 		/// </summary>
 		internal void Check () 
 		{
@@ -109,7 +114,7 @@ namespace NodeEditorFramework
 		/// </summary>
 		protected virtual void ReloadTexture () 
 		{
-			knobTexture = RTEditorGUI.ColorToTex (1, Color.red);
+			knobTexture = ResourceManager.GetTintedTexture ("Textures/Knob.png", backgroundColor);
 		}
 
 		#endregion
@@ -137,8 +142,11 @@ namespace NodeEditorFramework
 		/// </summary>
 		public virtual void DrawKnob () 
 		{
+			Check ();
 			Rect knobRect = GetGUIKnob ();
+			GUI.contentColor = backgroundColor;
 			GUI.DrawTexture (knobRect, knobTexture);
+			GUI.contentColor = Color.white;
 			//TODO draw ConnectionRules, and color the knob bg according to its thingamajig
 		}
 

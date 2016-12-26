@@ -5,7 +5,7 @@ namespace NodeEditorFramework {
 	/// Defines rules for when you can and cannot make a connection to this knob.
 	/// </summary>
 	[System.Serializable]
-	public abstract class ConnectionRule : ScriptableObject {
+	public abstract class ConnectionRule {//: ScriptableObject {
 		public ConnectionKnob knob;
 
 		/// <summary>
@@ -21,6 +21,12 @@ namespace NodeEditorFramework {
 		/// </summary>
 		public virtual bool CanStartConnection (){
 			return true;
+		}
+		/// <summary>
+		/// Can we pluck the connection off of this node?
+		/// </summary>
+		public virtual bool CanPluck (){
+			return false;
 		}
 		/// <summary>
 		/// Draw whatever this rules indicators are

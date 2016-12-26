@@ -182,7 +182,8 @@ namespace NodeEditorFramework
 
 			CheckCurrentCache ();
 			UpdateCanvasInfo ();
-			NodeEditor.Calculator.RecalculateAll (nodeCanvas);
+			//TODO Re-enable once Calculators are working again
+			//NodeEditor.Calculator.RecalculateAll (nodeCanvas);
 			NodeEditor.RepaintClients ();
 		}
 		

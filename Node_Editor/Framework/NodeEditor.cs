@@ -231,9 +231,24 @@ namespace NodeEditorFramework
 				curNodeCanvas.nodes.Add (curEditorState.selectedNode);
 			}
 
+			/*
 			// Draw the transitions and connections. Has to be drawn before nodes as transitions originate from node centers
 			for (int nodeCnt = 0; nodeCnt < curNodeCanvas.nodes.Count; nodeCnt++)
 				curNodeCanvas.nodes [nodeCnt].DrawConnections ();
+			*/
+			foreach (Connection conn in curNodeCanvas.connections) {
+				Vector2 startPos = conn.A.GetGUIKnob ().center;
+				Vector2 startDir = conn.A.GetDirection();
+				Vector2 endPos = conn.B.GetGUIKnob ().center;
+				Vector2 endDir = conn.B.GetDirection();
+				NodeEditorGUI.OptimiseBezierDirections (startPos, ref startDir, endPos, ref endDir);
+				//TODO Remove randomization of connections
+				endPos += new Vector2 (UnityEngine.Random.value - 0.5f, UnityEngine.Random.value - 0.5f);
+				startPos += new Vector2 (UnityEngine.Random.value - 0.5f, UnityEngine.Random.value - 0.5f);
+				endDir += new Vector2 (UnityEngine.Random.value - 0.5f, UnityEngine.Random.value - 0.5f)/2f;
+				startDir += new Vector2 (UnityEngine.Random.value - 0.5f, UnityEngine.Random.value - 0.5f)/2f;
+				NodeEditorGUI.DrawConnection (startPos, startDir, endPos,endDir, Color.green);
+			}
 
 			// Draw the nodes
 			for (int nodeCnt = 0; nodeCnt < curNodeCanvas.nodes.Count; nodeCnt++)

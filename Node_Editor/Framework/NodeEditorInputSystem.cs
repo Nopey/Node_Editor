@@ -35,6 +35,7 @@ namespace NodeEditorFramework
 			contextFillers = new List<KeyValuePair<ContextFillerAttribute, Delegate>> ();
 
 			// Iterate through each static method
+			//TODO Upgrade to LINQ
 			IEnumerable<Assembly> scriptAssemblies = AppDomain.CurrentDomain.GetAssemblies ().Where ((Assembly assembly) => assembly.FullName.Contains ("Assembly"));
 			foreach (Assembly assembly in scriptAssemblies) 
 			{
@@ -145,6 +146,7 @@ namespace NodeEditorFramework
 		/// </summary>
 		private static void FillContextMenu (NodeEditorInputInfo inputInfo, GenericMenu contextMenu, ContextType contextType) 
 		{
+			Debug.Log ("An entire " + contextEntries.Count + " entries! wait a second..");
 			foreach (KeyValuePair<ContextEntryAttribute, PopupMenu.MenuFunctionData> contextEntry in contextEntries)
 			{ // Add all registered menu entries for the specified type to the contextMenu
 				if (contextEntry.Key.contextType == contextType)
@@ -259,6 +261,9 @@ namespace NodeEditorFramework
 			if (Event.current.button == 1) 
 			{ // Handle context clicks on Node and canvas
 				GenericMenu contextMenu = new GenericMenu ();
+				contextMenu.AddItem (new GUIContent("Nose Button"), true, new PopupMenu.MenuFunction(delegate() {
+					Debug.Log("Boop!");
+				}));
 				if (inputInfo.editorState.focusedNode != null) // Node Context Click
 					FillContextMenu (inputInfo, contextMenu, ContextType.Node);
 				else // Editor Context Click

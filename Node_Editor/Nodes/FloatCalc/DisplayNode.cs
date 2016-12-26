@@ -21,18 +21,20 @@ namespace NodeEditorFramework.Standard
 			
 			node.name = "Display Node";
 			node.rect = new Rect (pos.x, pos.y, 150, 50);
-			
-			NodeInput.Create (node, "Value", "Float");
+
+			CalculationKnob.Create (node, "Value",true);
 
 			return node;
 		}
 		
 		protected internal override void NodeGUI () 
 		{
-			Inputs [0].DisplayLayout (new GUIContent ("Value : " + (assigned? value.ToString () : ""), "The input value to display"));
+			//Inputs [0].DisplayLayout (new GUIContent ("Value : " + (assigned? value.ToString () : ""), "The input value to display"));
+			nodeKnobs[0].DisplayLayout(new GUIContent("Value : " + (assigned? value.ToString () : ""), "The input value to display"));
 		}
-		
-		public override bool Calculate () 
+
+		//TODO Implement Calculate on DisplayNode()
+		/*public override bool Calculate () 
 		{
 			if (!allInputsReady ()) 
 			{
@@ -45,6 +47,6 @@ namespace NodeEditorFramework.Standard
 			assigned = true;
 
 			return true;
-		}
+		}*/
 	}
 }

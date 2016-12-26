@@ -21,7 +21,7 @@ namespace NodeEditorFramework.Standard
 			node.name = "Input Node";
 			node.rect = new Rect (pos.x, pos.y, 200, 50);;
 
-			NodeOutput.Create (node, "Value", "Float");
+			CalculationKnob.Create (node, "Value",false);
 
 			return node;
 		}
@@ -29,15 +29,16 @@ namespace NodeEditorFramework.Standard
 		protected internal override void NodeGUI () 
 		{
 			value = RTEditorGUI.FloatField (new GUIContent ("Value", "The input value of type float"), value);
-			OutputKnob (0);
 
-			if (GUI.changed)
-				NodeEditor.Calculator.RecalculateFrom (this);
+			//CalculationKnob.Create (node, "Value",false);
+
+			//if (GUI.changed)
+				//NodeEditor.Calculator.RecalculateFrom (this);
 		}
 
 		public override bool Calculate () 
 		{
-			Outputs[0].SetValue<float> (value);
+			//Outputs[0].SetValue<float> (value);
 			return true;
 		}
 	}

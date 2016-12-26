@@ -18,23 +18,24 @@ namespace NodeEditorFramework
 		private static void FillAddNodes (NodeEditorInputInfo inputInfo, GenericMenu canvasContextMenu) 
 		{ // Show all nodes, and if a connection is drawn, only compatible nodes to auto-connect
 			NodeEditorState state = inputInfo.editorState;
-			//List<Node> displayedNodes = state.partialConnection != null? NodeTypes.getCompatibleNodes (state.partialConnection) : NodeTypes.nodes.Keys.ToList ();
-			//foreach (Node compatibleNode in displayedNodes)
-			//{
-			//	if (NodeCanvasManager.CheckCanvasCompability (compatibleNode, inputInfo.editorState.canvas.GetType ()))
-			//		canvasContextMenu.AddItem (new GUIContent ("Add " + NodeTypes.nodes[compatibleNode].adress), false, CreateNodeCallback, new NodeEditorInputInfo (compatibleNode.GetID, state));
-			//}
+			List<Node> displayedNodes = state.partialConnection != null? NodeTypes.getCompatibleNodes (state.partialConnection) : NodeTypes.nodes.Keys.ToList ();
+			foreach (Node compatibleNode in displayedNodes)
+			{
+				if (NodeCanvasManager.CheckCanvasCompability (compatibleNode, inputInfo.editorState.canvas.GetType ()))
+					canvasContextMenu.AddItem (new GUIContent ("Add " + NodeTypes.nodes[compatibleNode].address), false, CreateNodeCallback, new NodeEditorInputInfo (compatibleNode.GetID, state));
+			}
 		}
 
 		private static void CreateNodeCallback (object infoObj)
 		{
+			Debug.Log ("wow is a bad wow");
 			NodeEditorInputInfo callback = infoObj as NodeEditorInputInfo;
 			if (callback == null)
 				throw new UnityException ("Callback Object passed by context is not of type NodeEditorInputInfo!");
 
 			callback.SetAsCurrentEnvironment ();
 			//TODO Reimplement Connection creation
-			//Node.Create (callback.message, NodeEditor.ScreenToCanvasSpace (callback.inputPos), callback.editorState.partialConnection);
+			Node.Create (callback.message, NodeEditor.ScreenToCanvasSpace (callback.inputPos), callback.editorState.partialConnection);
 			callback.editorState.partialConnection = null;
 			NodeEditor.RepaintClients ();
 		}
@@ -57,7 +58,7 @@ namespace NodeEditorFramework
 		[ContextEntryAttribute (ContextType.Node, "Duplicate Node")]
 		private static void DuplicateNode (NodeEditorInputInfo inputInfo) 
 		{
-			/*TODO Reimplement duplication
+			//TODO Reimplement duplication
 			inputInfo.SetAsCurrentEnvironment ();
 			NodeEditorState state = inputInfo.editorState;
 			if (state.focusedNode != null) 
@@ -66,7 +67,7 @@ namespace NodeEditorFramework
 				state.selectedNode = state.focusedNode = duplicatedNode;
 				state.partialConnection = null;
 				inputInfo.inputEvent.Use ();
-			}*/
+			}
 		}
 
 		#endregion
@@ -204,36 +205,38 @@ namespace NodeEditorFramework
 			{ // Left-Clicked on a NodeKnob, so check if any of them is a nodeInput or -Output
 				//TODO node connecting
 				if (state.focusedNodeKnob is ConnectionKnob)
-				{ // Output clicked -> Draw new connection from it
-					state.partialConnection = (ConnectionKnob)state.focusedNodeKnob;
-					inputInfo.inputEvent.Use ();
-				}
-				/*TODO reimplement this, by testing if clicked knob has a single connection, and doesn't allow for creation of a new one
-				else if (state.focusedNodeKnob is NodeInput)
-				{ // Input clicked -> Loose and edit connection from it
-					NodeInput clickedInput = (NodeInput)state.focusedNodeKnob;
-					if (clickedInput.connection != null)
-					{
-						state.partialConnection = clickedInput.connection;
-						clickedInput.RemoveConnection ();
+				{ 
+					if ((state.focusedNodeKnob as ConnectionKnob).CanPluck ()) {
+						state.partialConnection = ((ConnectionKnob)state.focusedNodeKnob).connection;
+						((ConnectionKnob)state.focusedNodeKnob).Delete ();
+						inputInfo.inputEvent.Use ();
+					} else {
+						// Output clicked -> Draw new connection from it
+						state.partialConnection = (ConnectionKnob)state.focusedNodeKnob;
 						inputInfo.inputEvent.Use ();
 					}
-				}//*/
+				}
 			}
 		}
 
 		[EventHandlerAttribute (EventType.MouseUp)]
 		private static void HandleApplyConnection (NodeEditorInputInfo inputInfo) 
 		{
-			/*TODO Connection Creation
 			NodeEditorState state = inputInfo.editorState;
-			if (inputInfo.inputEvent.button == 0 && state.partialConnection != null && state.focusedNode != null && state.focusedNodeKnob != null && state.focusedNodeKnob is NodeInput) 
-			{ // An input was clicked, it'll will now be connected
-				NodeInput clickedInput = state.focusedNodeKnob as NodeInput;
-				clickedInput.TryApplyConnection (state.partialConnection);
+			if (inputInfo.inputEvent.button == 0
+			    && state.partialConnection != null
+			    && state.focusedNode != null
+			    && state.focusedNodeKnob != null
+			    && state.focusedNodeKnob is ConnectionKnob
+			    && ((ConnectionKnob)state.focusedNodeKnob).CanStartConnection ()
+			    && ((ConnectionKnob)state.focusedNodeKnob).CanConnect (state.partialConnection)
+			    && state.partialConnection.CanConnect ((ConnectionKnob)state.focusedNodeKnob)) { // An input was clicked, it'll will now be connected
+				ConnectionKnob target = state.focusedNodeKnob as ConnectionKnob;
+				target.connections.Add (state.partialConnection);
+				state.canvas.connections.Add (Connection.Set(state.partialConnection, target));
 				inputInfo.inputEvent.Use ();
 			}
-			state.partialConnection = null;*/
+			state.partialConnection = null;
 		}
 
 		#endregion

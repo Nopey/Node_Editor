@@ -15,6 +15,7 @@ namespace NodeEditorFramework
 		public bool livesInScene = false;
 
 		public List<Node> nodes = new List<Node> ();
+		public List<Connection> connections = new List<Connection> ();
 
 		public NodeEditorState[] editorStates = new NodeEditorState[0];
 
