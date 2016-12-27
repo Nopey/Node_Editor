@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 using NodeEditorFramework;
 using NodeEditorFramework.Utilities;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace NodeEditorFramework 
 {
@@ -255,6 +256,10 @@ namespace NodeEditorFramework
 				}
 			}
 
+			foreach(Connection conn in nodeCanvas.connections){
+				AddSubAsset(conn,nodeCanvas);
+			}
+
 			UnityEditor.AssetDatabase.SaveAssets ();
 			UnityEditor.AssetDatabase.Refresh ();
 		#else
@@ -399,7 +404,7 @@ namespace NodeEditorFramework
 		/// Creates a working copy of the specified nodeCanvas, and optionally also of it's associated editorStates.
 		/// This breaks the link of this object to any stored assets and references. That means, that all changes to this object will have to be explicitly saved.
 		/// </summary>
-		//TODO Figure this out and rewrite it
+		//TODO Ensure new version doesn't cause glitches
 		public static NodeCanvas CreateWorkingCopy (NodeCanvas nodeCanvas, bool editorStates) 
 		{
 			nodeCanvas.Validate ();

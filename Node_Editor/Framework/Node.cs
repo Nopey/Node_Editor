@@ -52,29 +52,12 @@ namespace NodeEditorFramework
 				throw new UnityException ("The Node " + name + " does not exist on the Canvas " + NodeEditor.curNodeCanvas.name + "!");
 			NodeEditorCallbacks.IssueOnDeleteNode (this);
 			NodeEditor.curNodeCanvas.nodes.Remove (this);
-			//TODO reimplement connection destruction upon deletion of node (but not in this class)
-			/*for (int outCnt = 0; outCnt < Outputs.Count; outCnt++) 
-			{
-				NodeOutput output = Outputs [outCnt];
-				while (output.connections.Count != 0)
-					output.connections[0].RemoveConnection ();
-				DestroyImmediate (output, true);
-			}
-			for (int inCnt = 0; inCnt < Inputs.Count; inCnt++) 
-			{
-				NodeInput input = Inputs [inCnt];
-				if (input.connection != null)
-					input.connection.connections.Remove (input);
-				DestroyImmediate (input, true);
-			}*/
-			for (int knobCnt = 0; knobCnt < nodeKnobs.Count; knobCnt++) 
-			{ // Inputs/Outputs need specific treatment, unfortunately
-				if (nodeKnobs[knobCnt] != null)
-					DestroyImmediate (nodeKnobs[knobCnt], true);
+			for (int x = 0; x < nodeKnobs.Count; x++) {
+				NodeKnob knob = nodeKnobs [x];
+				knob.Delete ();
 			}
 			DestroyImmediate (this, true);
 		}
-		//TODO Reimplement Creation of Nodes
 		/*/// <summary>
 		/// Create the a Node of the type specified by the nodeID at position
 		/// </summary>
@@ -89,7 +72,6 @@ namespace NodeEditorFramework
 		/// </summary>
 		public static Node Create (string nodeID, Vector2 position, NodeKnob connectingOutput=null) 
 		{
-			Debug.Log ("Duplicated, am I?");
 			Node node = NodeTypes.getDefaultNode (nodeID);
 			if (node == null)
 				throw new UnityException ("Cannot create Node with id " + nodeID + " as no such Node type is registered!");
@@ -481,7 +463,7 @@ namespace NodeEditorFramework
 		//*/
 
 		#region Node Utility
-		//TODO reimplement all of utility with cr_directional
+		//TODO reimplement all of utility with cr_directional, and inside of connectionKnob
 
 		/// <summary>
 		/// Recursively checks whether this node is a child of the other node

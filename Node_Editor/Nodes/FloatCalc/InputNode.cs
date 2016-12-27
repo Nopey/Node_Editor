@@ -21,7 +21,7 @@ namespace NodeEditorFramework.Standard
 			node.name = "Input Node";
 			node.rect = new Rect (pos.x, pos.y, 200, 50);;
 
-			CalculationKnob.Create (node, "Value",false);
+			CalculationKnob.CreateCalculationKnob (node, "Value",false);
 
 			return node;
 		}

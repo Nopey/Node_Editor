@@ -9,18 +9,19 @@ namespace NodeEditorFramework {
 		/// The connected Knobs, if any.
 		/// </summary>
 		public List<ConnectionKnob> connections=new List<ConnectionKnob>();
+
 		/// <summary> the first connection, or null if there are no connections.
 		/// Its really just a convenience.
 		/// </summary>
 		public ConnectionKnob connection{ get { return ((connections == null || connections.Count == 0) ? null : connections [0]);} }
 
-		public List<ConnectionRule> connectionRules;
+		public List<ConnectionRule> connectionRules= new List<ConnectionRule> ();
 		/// <summary>
 		/// Returns all additional ScriptableObjects this NodeKnob holds. 
 		/// That means only the actual SOURCES, simple REFERENCES will not be returned
 		/// This means all SciptableObjects returned here do not have it's source elsewhere
 		/// </summary>
-		//public override ScriptableObject[] GetScriptableObjects () { return (ScriptableObject[])connectionRules.ToArray(); }
+		public override ScriptableObject[] GetScriptableObjects () { return (ScriptableObject[])connectionRules.ToArray(); }
 
 		/// <summary>
 		/// Can we connect from this to a specified node?
@@ -62,15 +63,35 @@ namespace NodeEditorFramework {
 			return false;
 		}
 
+		public override void DrawKnob (){
+			base.DrawKnob();
+			foreach (ConnectionRule cr in connectionRules) {
+				cr.Draw ();
+			}
+		}
+
 		/// <summary>
 		/// Creates a new Connection Knob and attaches it to a node
 		/// </summary>
-		public static ConnectionKnob Create(Node nodeBody, string inputName, NodeSide nodeSide = NodeSide.Right, float sidePosition = 20f){
+		public static ConnectionKnob CreateConnectionKnob(Node nodeBody, string inputName, NodeSide nodeSide = NodeSide.Right, float sidePosition = 20f){
 			ConnectionKnob knob = CreateInstance <ConnectionKnob> ();
-			knob.connectionRules = new List<ConnectionRule> ();
 			knob.InitBase (nodeBody, nodeSide, sidePosition, inputName);
 			nodeBody.nodeKnobs.Add (knob);
 			return knob;
+		}
+
+		public override void Delete () {
+			NodeEditor.curNodeCanvas.connections.RemoveAll (p => (p.A == this || p.B == this));
+			foreach(ConnectionKnob c in connections){
+				c.connections.RemoveAll (p => p==this);
+			}
+			base.Delete ();
+		}
+
+		public void OnEnable(){
+			foreach (ConnectionRule cr in connectionRules) {
+				cr.knob = this;
+			}
 		}
 	}
 

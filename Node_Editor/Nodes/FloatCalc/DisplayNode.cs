@@ -22,7 +22,7 @@ namespace NodeEditorFramework.Standard
 			node.name = "Display Node";
 			node.rect = new Rect (pos.x, pos.y, 150, 50);
 
-			CalculationKnob.Create (node, "Value",true);
+			CalculationKnob.CreateCalculationKnob (node, "Value", true);
 
 			return node;
 		}

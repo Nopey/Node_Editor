@@ -92,8 +92,9 @@ namespace NodeEditorFramework
 			foreach (NodeKnob knob in node.nodeKnobs)
 			{
 				NodeEditorSaveManager.AddSubAsset (knob, node);
-				foreach (ScriptableObject so in knob.GetScriptableObjects ())
+				foreach (ScriptableObject so in knob.GetScriptableObjects ()){
 					NodeEditorSaveManager.AddSubAsset (so, knob);
+				}
 			}
 
 			UpdateCacheFile ();
@@ -306,7 +307,7 @@ namespace NodeEditorFramework
 			openedCanvasPath = path;
 			RecreateCache ();
 			UpdateCanvasInfo ();
-			NodeEditor.Calculator.RecalculateAll (nodeCanvas);
+			//NodeEditor.Calculator.RecalculateAll (nodeCanvas);
 			NodeEditor.RepaintClients ();
 		}
 

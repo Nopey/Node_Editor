@@ -28,14 +28,17 @@ namespace NodeEditorFramework
 
 		private static void CreateNodeCallback (object infoObj)
 		{
-			Debug.Log ("wow is a bad wow");
 			NodeEditorInputInfo callback = infoObj as NodeEditorInputInfo;
 			if (callback == null)
 				throw new UnityException ("Callback Object passed by context is not of type NodeEditorInputInfo!");
 
 			callback.SetAsCurrentEnvironment ();
 			//TODO Reimplement Connection creation
+			try{
 			Node.Create (callback.message, NodeEditor.ScreenToCanvasSpace (callback.inputPos), callback.editorState.partialConnection);
+			}catch(Exception e){
+				Debug.LogWarning (e.Message + " and stacktrace "+e.StackTrace);
+			}
 			callback.editorState.partialConnection = null;
 			NodeEditor.RepaintClients ();
 		}
@@ -203,17 +206,21 @@ namespace NodeEditorFramework
 			NodeEditorState state = inputInfo.editorState;
 			if (inputInfo.inputEvent.button == 0 && state.focusedNodeKnob != null)
 			{ // Left-Clicked on a NodeKnob, so check if any of them is a nodeInput or -Output
-				//TODO node connecting
 				if (state.focusedNodeKnob is ConnectionKnob)
 				{ 
 					if ((state.focusedNodeKnob as ConnectionKnob).CanPluck ()) {
+						//TODO delete the Connection here too
 						state.partialConnection = ((ConnectionKnob)state.focusedNodeKnob).connection;
+						int hash = ((ConnectionKnob)state.focusedNodeKnob).connection.GetHashCode () + state.focusedNodeKnob.GetHashCode ();
+						NodeEditor.curNodeCanvas.connections.RemoveAll(p=>p.GetHashCode()==hash);
 						((ConnectionKnob)state.focusedNodeKnob).Delete ();
 						inputInfo.inputEvent.Use ();
 					} else {
 						// Output clicked -> Draw new connection from it
-						state.partialConnection = (ConnectionKnob)state.focusedNodeKnob;
-						inputInfo.inputEvent.Use ();
+						if ((state.focusedNodeKnob as ConnectionKnob).CanStartConnection ()) {
+							state.partialConnection = (ConnectionKnob)state.focusedNodeKnob;
+							inputInfo.inputEvent.Use ();
+						}
 					}
 				}
 			}
@@ -228,12 +235,13 @@ namespace NodeEditorFramework
 			    && state.focusedNode != null
 			    && state.focusedNodeKnob != null
 			    && state.focusedNodeKnob is ConnectionKnob
-			    && ((ConnectionKnob)state.focusedNodeKnob).CanStartConnection ()
 			    && ((ConnectionKnob)state.focusedNodeKnob).CanConnect (state.partialConnection)
 			    && state.partialConnection.CanConnect ((ConnectionKnob)state.focusedNodeKnob)) { // An input was clicked, it'll will now be connected
 				ConnectionKnob target = state.focusedNodeKnob as ConnectionKnob;
 				target.connections.Add (state.partialConnection);
 				state.canvas.connections.Add (Connection.Set(state.partialConnection, target));
+				state.partialConnection.connections.Add(target);
+				target.connections.Add(state.partialConnection);
 				inputInfo.inputEvent.Use ();
 			}
 			state.partialConnection = null;

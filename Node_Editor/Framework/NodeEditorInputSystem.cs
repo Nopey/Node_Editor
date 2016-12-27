@@ -146,7 +146,6 @@ namespace NodeEditorFramework
 		/// </summary>
 		private static void FillContextMenu (NodeEditorInputInfo inputInfo, GenericMenu contextMenu, ContextType contextType) 
 		{
-			Debug.Log ("An entire " + contextEntries.Count + " entries! wait a second..");
 			foreach (KeyValuePair<ContextEntryAttribute, PopupMenu.MenuFunctionData> contextEntry in contextEntries)
 			{ // Add all registered menu entries for the specified type to the contextMenu
 				if (contextEntry.Key.contextType == contextType)

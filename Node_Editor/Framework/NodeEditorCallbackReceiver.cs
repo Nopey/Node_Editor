@@ -22,8 +22,8 @@ namespace NodeEditorFramework
 		public virtual void OnAddNodeKnob (NodeKnob knob) {}
 		// Connection
 		//TODO figure out what used these and reimplement it
-		//public virtual void OnAddConnection (NodeInput input) {}
-		//public virtual void OnRemoveConnection (NodeInput input) {}
+		public virtual void OnAddConnection (ConnectionKnob input) {}
+		public virtual void OnRemoveConnection (ConnectionKnob input) {}
 	}
 
 	public static partial class NodeEditorCallbacks
@@ -120,7 +120,6 @@ namespace NodeEditorFramework
 		public static Action<Node> OnAddNode;
 		public static void IssueOnAddNode (Node node) 
 		{
-			Debug.Log ("Created eh?");
 			if (OnAddNode != null)
 				OnAddNode.Invoke (node);
 			for (int cnt = 0; cnt < receiverCount; cnt++) 
@@ -177,25 +176,24 @@ namespace NodeEditorFramework
 
 		#endregion
 
-		/*
 		#region Connection (2)
-
-		public static Action<NodeInput> OnAddConnection;
-		public static void IssueOnAddConnection (NodeInput input) 
+		//TODO Actually run these functions
+		public static Action<ConnectionKnob> OnAddConnection;
+		public static void IssueOnAddConnection (ConnectionKnob k) 
 		{
 			if (OnAddConnection != null)
-				OnAddConnection.Invoke (input);
+				OnAddConnection.Invoke (k);
 			for (int cnt = 0; cnt < receiverCount; cnt++) 
 			{
 				if (callbackReceiver [cnt] == null)
 					callbackReceiver.RemoveAt (cnt--);
 				else
-					callbackReceiver [cnt].OnAddConnection (input);
+					callbackReceiver [cnt].OnAddConnection (k);
 			}
 		}
 
-		public static Action<NodeInput> OnRemoveConnection;
-		public static void IssueOnRemoveConnection (NodeInput input) 
+		public static Action<ConnectionKnob> OnRemoveConnection;
+		public static void IssueOnRemoveConnection (ConnectionKnob input) 
 		{
 			if (OnRemoveConnection != null)
 				OnRemoveConnection.Invoke (input);

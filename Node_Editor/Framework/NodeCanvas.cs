@@ -59,7 +59,7 @@ namespace NodeEditorFramework
 						continue;
 					}
 
-					//TODO reimplement this
+					//TODO reimplement this verification, probably by calling a function on the node, which calls a function on the knobs, etc.
 					/*if (nodeKnob is NodeInput)
 					{
 						NodeInput input = nodeKnob as NodeInput;

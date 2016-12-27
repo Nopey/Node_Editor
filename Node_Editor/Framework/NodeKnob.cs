@@ -114,7 +114,10 @@ namespace NodeEditorFramework
 		/// </summary>
 		protected virtual void ReloadTexture () 
 		{
-			knobTexture = ResourceManager.GetTintedTexture ("Textures/Knob.png", backgroundColor);
+			//TODO determine performance impact of getTintedTexture vs GUI.color
+			//GetTintedTexture is slow upon first load of the image, because it iterates through every pixel
+			//GUI.color MAY be badly optimized, and MIGHT slow down the frame to frame drawing.
+			knobTexture = ResourceManager.GetTintedTexture ("Textures/Knob.png",backgroundColor);
 		}
 
 		#endregion
@@ -144,10 +147,9 @@ namespace NodeEditorFramework
 		{
 			Check ();
 			Rect knobRect = GetGUIKnob ();
-			GUI.contentColor = backgroundColor;
+			GUI.color = backgroundColor;
 			GUI.DrawTexture (knobRect, knobTexture);
-			GUI.contentColor = Color.white;
-			//TODO draw ConnectionRules, and color the knob bg according to its thingamajig
+			GUI.color = Color.white;
 		}
 
 		/// <summary>
@@ -266,7 +268,8 @@ namespace NodeEditorFramework
 		/// <summary>
 		/// Gets the rotation steps anti-clockwise from NodeSide A to B
 		/// </summary>
-		private static int getRotationStepsAntiCW (NodeSide sideA, NodeSide sideB) 
+		//TODO refractor this to utility
+		public static int getRotationStepsAntiCW (NodeSide sideA, NodeSide sideB) 
 		{
 			return sideB - sideA + (sideA>sideB? 4 : 0);
 		}
