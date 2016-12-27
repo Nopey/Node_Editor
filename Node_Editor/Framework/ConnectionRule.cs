@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
+using System;
 
 namespace NodeEditorFramework {
 	/// <summary>
 	/// Defines rules for when you can and cannot make a connection to this knob.
 	/// </summary>
-	[System.Serializable]
 	public abstract class ConnectionRule : ScriptableObject {
 		public ConnectionKnob knob;
-
 		/// <summary>
 		/// Can we connect from this to a specified node?
 		/// </summary>

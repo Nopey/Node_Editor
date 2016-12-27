@@ -260,9 +260,6 @@ namespace NodeEditorFramework
 			if (Event.current.button == 1) 
 			{ // Handle context clicks on Node and canvas
 				GenericMenu contextMenu = new GenericMenu ();
-				contextMenu.AddItem (new GUIContent("Nose Button"), true, new PopupMenu.MenuFunction(delegate() {
-					Debug.Log("Boop!");
-				}));
 				if (inputInfo.editorState.focusedNode != null) // Node Context Click
 					FillContextMenu (inputInfo, contextMenu, ContextType.Node);
 				else // Editor Context Click

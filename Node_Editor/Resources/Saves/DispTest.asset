@@ -14,10 +14,103 @@ MonoBehaviour:
   saveName: DispTest
   savePath: Assets/Plugins/Node_Editor/Resources/Saves/DispTest.asset
   livesInScene: 0
-  nodes: []
+  nodes:
+  - {fileID: 114638540727141092}
+  - {fileID: 0}
+  connections:
+  - A: {fileID: 0}
+    B: {fileID: 0}
   editorStates:
-  - {fileID: 114610895287933124}
---- !u!114 &114610895287933124
+  - {fileID: 114970921459771744}
+--- !u!114 &114096814571306862
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ea9e1c4db0d64bd29cadca279274a8e, type: 3}
+  m_Name: Value
+  m_EditorClassIdentifier: 
+  body: {fileID: 114638540727141092}
+  side: 4
+  sidePosition: 28
+  sideOffset: 0
+  backgroundColor: {r: 1, g: 1, b: 1, a: 1}
+  connections:
+  - {fileID: 0}
+  - {fileID: 0}
+  connectionRules:
+  - {fileID: 0}
+  - {fileID: 0}
+  isInput: 1
+--- !u!114 &114229859573585668
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3dd50b389073b148b5ec10e419dc073, type: 3}
+  m_Name: Input Node
+  m_EditorClassIdentifier: 
+  rect:
+    serializedVersion: 2
+    x: -418.5
+    y: -96.5
+    width: 200
+    height: 50
+  nodeKnobs:
+  - {fileID: 114884097905957050}
+  backgroundColor: {r: 1, g: 1, b: 1, a: 1}
+  value: 1
+--- !u!114 &114638540727141092
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39f5df92d12f07d45a4fcfb96e1b36d8, type: 3}
+  m_Name: Display Node
+  m_EditorClassIdentifier: 
+  rect:
+    serializedVersion: 2
+    x: 108
+    y: -344.5
+    width: 150
+    height: 50
+  nodeKnobs:
+  - {fileID: 114096814571306862}
+  backgroundColor: {r: 1, g: 1, b: 1, a: 1}
+  assigned: 0
+  value: 0
+--- !u!114 &114884097905957050
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ea9e1c4db0d64bd29cadca279274a8e, type: 3}
+  m_Name: Value
+  m_EditorClassIdentifier: 
+  body: {fileID: 114229859573585668}
+  side: 2
+  sidePosition: 20
+  sideOffset: 0
+  backgroundColor: {r: 1, g: 1, b: 1, a: 1}
+  connections:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  connectionRules: []
+  isInput: 0
+--- !u!114 &114970921459771744
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -32,5 +125,5 @@ MonoBehaviour:
   parentEditor: {fileID: 0}
   drawing: 1
   selectedNode: {fileID: 0}
-  panOffset: {x: -560, y: 85}
+  panOffset: {x: 0, y: 0}
   zoom: 1

@@ -1,18 +1,17 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System;
 
 namespace NodeEditorFramework{
-	public class Connection : ScriptableObject {
-		public static Connection Set(ConnectionKnob one,ConnectionKnob two){
-			Connection c = ScriptableObject.CreateInstance<Connection> ();
+	[Serializable]
+	public class Connection{
+		public Connection(ConnectionKnob one,ConnectionKnob two){
 			if (one.GetHashCode () > two.GetHashCode ()) {
-				c.A = one;
-				c.B = two;
+				this.A = one;
+				this.B = two;
 			} else {
-				c.B = one;
-				c.A = two;
+				this.B = one;
+				this.A = two;
 			}
-			return c;
 		}
 
 		public override System.Int32 GetHashCode () {

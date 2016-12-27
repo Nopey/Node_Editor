@@ -209,11 +209,10 @@ namespace NodeEditorFramework
 				if (state.focusedNodeKnob is ConnectionKnob)
 				{ 
 					if ((state.focusedNodeKnob as ConnectionKnob).CanPluck ()) {
-						//TODO delete the Connection here too
 						state.partialConnection = ((ConnectionKnob)state.focusedNodeKnob).connection;
 						int hash = ((ConnectionKnob)state.focusedNodeKnob).connection.GetHashCode () + state.focusedNodeKnob.GetHashCode ();
 						NodeEditor.curNodeCanvas.connections.RemoveAll(p=>p.GetHashCode()==hash);
-						((ConnectionKnob)state.focusedNodeKnob).Delete ();
+						((ConnectionKnob)state.focusedNodeKnob).connections.Remove (state.partialConnection);
 						inputInfo.inputEvent.Use ();
 					} else {
 						// Output clicked -> Draw new connection from it
@@ -239,7 +238,7 @@ namespace NodeEditorFramework
 			    && state.partialConnection.CanConnect ((ConnectionKnob)state.focusedNodeKnob)) { // An input was clicked, it'll will now be connected
 				ConnectionKnob target = state.focusedNodeKnob as ConnectionKnob;
 				target.connections.Add (state.partialConnection);
-				state.canvas.connections.Add (Connection.Set(state.partialConnection, target));
+				state.canvas.connections.Add (new Connection(state.partialConnection, target));
 				state.partialConnection.connections.Add(target);
 				target.connections.Add(state.partialConnection);
 				inputInfo.inputEvent.Use ();

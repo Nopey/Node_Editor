@@ -256,10 +256,6 @@ namespace NodeEditorFramework
 				}
 			}
 
-			foreach(Connection conn in nodeCanvas.connections){
-				AddSubAsset(conn,nodeCanvas);
-			}
-
 			UnityEditor.AssetDatabase.SaveAssets ();
 			UnityEditor.AssetDatabase.Refresh ();
 		#else

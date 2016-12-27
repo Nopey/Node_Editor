@@ -5,17 +5,17 @@ using UnityEngine;
 using NodeEditorFramework.Utilities;
 
 namespace NodeEditorFramework {
+	[Serializable]
 	public class CR_Directional : ConnectionRule {
 		public bool isInput;
-		[System.NonSerialized]
+		[NonSerialized]
 		protected internal Texture2D directionalTexture;
 
-		//TODO decide on default directionality, currently defaults to output
-		public static CR_Directional CreateDirectional (ConnectionKnob parent,bool isInput=false){
-			CR_Directional crd=CreateInstance<CR_Directional>();
-			crd.isInput = isInput;
-			crd.knob = parent;
-			return crd;
+		public static CR_Directional Create (ConnectionKnob parent,bool isInput=false){
+			CR_Directional inst = CreateInstance<CR_Directional> ();
+			inst.isInput = isInput;
+			inst.knob = parent;
+			return inst;
 		}
 
 
@@ -34,6 +34,7 @@ namespace NodeEditorFramework {
 		/// </summary>
 		public override bool CanStartConnection (){
 			//TODO Possibly return !isInput instead of true, if we don't want people drawing connections from input to output.
+			//(that was the old behaviour)
 			return true;
 		}
 
@@ -49,7 +50,7 @@ namespace NodeEditorFramework {
 		void ReloadModifiedTexture(){
 			ReloadTexture ();
 			if (directionalTexture == null)
-				throw new UnityException ("Knob texture of " + name + " could not be loaded!");
+				throw new UnityException ("CR_Directional couldn't load its DirectionalKnob.png!");
 			if (knob.side != NodeSide.Right) 
 			{ // Rotate Knob texture according to the side it's used on
 				ResourceManager.SetDefaultResourcePath (NodeEditor.editorPath + "Resources/");

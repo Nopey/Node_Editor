@@ -3,18 +3,15 @@ using System;
 using System.Linq;
 
 namespace NodeEditorFramework {
+	[Serializable]
 	public class CR_MaxConnections : ConnectionRule {
-		public int maxConnections=1;
+		public int maxConnections;
 
-		public static CR_MaxConnections CreateMaxConnections(ConnectionKnob parent){
-			CR_MaxConnections crmc = CreateInstance<CR_MaxConnections> ();
-			crmc.knob=parent;
-			return crmc;
-		}
-		public static CR_MaxConnections CreateMaxConnections(ConnectionKnob parent, int maxConnections){
-			CR_MaxConnections crmc = CreateMaxConnections (parent);
-			crmc.maxConnections = maxConnections;
-			return crmc;
+		public static CR_MaxConnections Create(ConnectionKnob parent, int maxConnections=1){
+			CR_MaxConnections inst = CreateInstance<CR_MaxConnections> ();
+			inst.knob=parent;
+			inst.maxConnections = maxConnections;
+			return inst;
 		}
 		/// <summary>
 		/// Can we connect from this to a specified node?
