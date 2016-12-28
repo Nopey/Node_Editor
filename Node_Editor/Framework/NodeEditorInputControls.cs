@@ -35,7 +35,7 @@ namespace NodeEditorFramework
 			callback.SetAsCurrentEnvironment ();
 			//TODO Reimplement Connection creation
 			try{
-			Node.Create (callback.message, NodeEditor.ScreenToCanvasSpace (callback.inputPos), callback.editorState.partialConnection);
+				Node.Create (callback.message, NodeEditor.ScreenToCanvasSpace (callback.inputPos));//, callback.editorState.partialConnection);
 			}catch(Exception e){
 				Debug.LogWarning (e.Message + " and stacktrace "+e.StackTrace);
 			}
@@ -61,12 +61,12 @@ namespace NodeEditorFramework
 		[ContextEntryAttribute (ContextType.Node, "Duplicate Node")]
 		private static void DuplicateNode (NodeEditorInputInfo inputInfo) 
 		{
-			//TODO Reimplement duplication
+			//TODO Reimplement duplication's auto connect
 			inputInfo.SetAsCurrentEnvironment ();
 			NodeEditorState state = inputInfo.editorState;
 			if (state.focusedNode != null) 
 			{ // Create new node of same type
-				Node duplicatedNode = Node.Create (state.focusedNode.GetID, NodeEditor.ScreenToCanvasSpace (inputInfo.inputPos), state.partialConnection);
+				Node duplicatedNode = Node.Create (state.focusedNode.GetID, NodeEditor.ScreenToCanvasSpace (inputInfo.inputPos));//, state.partialConnection);
 				state.selectedNode = state.focusedNode = duplicatedNode;
 				state.partialConnection = null;
 				inputInfo.inputEvent.Use ();
@@ -238,9 +238,8 @@ namespace NodeEditorFramework
 			    && state.partialConnection.CanConnect ((ConnectionKnob)state.focusedNodeKnob)) { // An input was clicked, it'll will now be connected
 				ConnectionKnob target = state.focusedNodeKnob as ConnectionKnob;
 				target.connections.Add (state.partialConnection);
-				state.canvas.connections.Add (new Connection(state.partialConnection, target));
 				state.partialConnection.connections.Add(target);
-				target.connections.Add(state.partialConnection);
+				state.canvas.connections.Add (new Connection(state.partialConnection, target));
 				inputInfo.inputEvent.Use ();
 			}
 			state.partialConnection = null;

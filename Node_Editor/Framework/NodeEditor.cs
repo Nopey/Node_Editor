@@ -242,11 +242,10 @@ namespace NodeEditorFramework
 				Vector2 endPos = conn.B.GetGUIKnob ().center;
 				Vector2 endDir = conn.B.GetDirection();
 				NodeEditorGUI.OptimiseBezierDirections (startPos, ref startDir, endPos, ref endDir);
-				//TODO Remove randomization of connections
-				endPos += new Vector2 (UnityEngine.Random.value - 0.5f, UnityEngine.Random.value - 0.5f);
-				startPos += new Vector2 (UnityEngine.Random.value - 0.5f, UnityEngine.Random.value - 0.5f);
-				endDir += new Vector2 (UnityEngine.Random.value - 0.5f, UnityEngine.Random.value - 0.5f)/2f;
-				startDir += new Vector2 (UnityEngine.Random.value - 0.5f, UnityEngine.Random.value - 0.5f)/2f;
+				//endPos += new Vector2 (UnityEngine.Random.value - 0.5f, UnityEngine.Random.value - 0.5f);
+				//startPos += new Vector2 (UnityEngine.Random.value - 0.5f, UnityEngine.Random.value - 0.5f);
+				//endDir += new Vector2 (UnityEngine.Random.value - 0.5f, UnityEngine.Random.value - 0.5f)/2f;
+				//startDir += new Vector2 (UnityEngine.Random.value - 0.5f, UnityEngine.Random.value - 0.5f)/2f;
 				NodeEditorGUI.DrawConnection (startPos, startDir, endPos,endDir, Color.green);
 			}
 

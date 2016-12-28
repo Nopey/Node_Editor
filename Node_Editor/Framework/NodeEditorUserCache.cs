@@ -93,7 +93,7 @@ namespace NodeEditorFramework
 			{
 				NodeEditorSaveManager.AddSubAsset (knob, node);
 				foreach (ScriptableObject so in knob.GetScriptableObjects ()){
-					NodeEditorSaveManager.AddSubAsset (so, knob);
+					NodeEditorSaveManager.AddSubAsset (so, node);
 				}
 			}
 

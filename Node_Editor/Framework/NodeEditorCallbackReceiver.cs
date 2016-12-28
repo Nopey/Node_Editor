@@ -21,7 +21,6 @@ namespace NodeEditorFramework
 		public virtual void OnMoveNode (Node node) {}
 		public virtual void OnAddNodeKnob (NodeKnob knob) {}
 		// Connection
-		//TODO figure out what used these and reimplement it
 		public virtual void OnAddConnection (ConnectionKnob input) {}
 		public virtual void OnRemoveConnection (ConnectionKnob input) {}
 	}
@@ -177,7 +176,7 @@ namespace NodeEditorFramework
 		#endregion
 
 		#region Connection (2)
-		//TODO Actually run these functions
+		//TODO Actually Issue these events
 		public static Action<ConnectionKnob> OnAddConnection;
 		public static void IssueOnAddConnection (ConnectionKnob k) 
 		{

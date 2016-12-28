@@ -259,7 +259,8 @@ namespace NodeEditorFramework
 			UnityEditor.AssetDatabase.SaveAssets ();
 			UnityEditor.AssetDatabase.Refresh ();
 		#else
-			// TODO: Node Editor: Need to implement ingame-saving (Resources, AsssetBundles, ... won't work)
+			// TODO: Node Editor: Need to implement ingame-saving (Resources, AssetBundles, ... won't work)
+			Debug.LogWarning("Realtime Editor Saving not implemented!");
 		#endif
 
 			NodeEditorCallbacks.IssueOnSaveCanvas (nodeCanvas);
@@ -400,7 +401,7 @@ namespace NodeEditorFramework
 		/// Creates a working copy of the specified nodeCanvas, and optionally also of it's associated editorStates.
 		/// This breaks the link of this object to any stored assets and references. That means, that all changes to this object will have to be explicitly saved.
 		/// </summary>
-		//TODO Ensure new version doesn't cause glitches
+		//TODO This function could be a source of bugs, double check it still does what its supposed to.
 		public static NodeCanvas CreateWorkingCopy (NodeCanvas nodeCanvas, bool editorStates) 
 		{
 			nodeCanvas.Validate ();
@@ -413,7 +414,6 @@ namespace NodeEditorFramework
 			for (int nodeCnt = 0; nodeCnt < nodeCanvas.nodes.Count; nodeCnt++) 
 			{
 				Node node = nodeCanvas.nodes[nodeCnt];
-				node.CheckNodeKnobMigration ();
 
 				// Clone Node and additional scriptableObjects
 				Node clonedNode = AddClonedSO (allSOs, clonedSOs, node);
@@ -434,21 +434,12 @@ namespace NodeEditorFramework
 				Node clonedNode = nodeCanvas.nodes[nodeCnt] = ReplaceSO (allSOs, clonedSOs, node);
 				clonedNode.CopyScriptableObjects ((ScriptableObject so) => ReplaceSO (allSOs, clonedSOs, so));
 
-				// We're going to restore these from NodeKnobs, no need to Replace muliple times
-				//clonedNode.Inputs = new List<NodeInput> ();
-				//clonedNode.Outputs = new List<NodeOutput> ();
 				for (int knobCnt = 0; knobCnt < clonedNode.nodeKnobs.Count; knobCnt++) 
 				{ // Clone generic NodeKnobs
 					NodeKnob knob = clonedNode.nodeKnobs[knobCnt] = ReplaceSO (allSOs, clonedSOs, clonedNode.nodeKnobs[knobCnt]);
 					knob.body = clonedNode;
 					// Replace additional scriptableObjects in the NodeKnob
 					knob.CopyScriptableObjects ((ScriptableObject so) => ReplaceSO (allSOs, clonedSOs, so));
-					// Add it into Inputs/Outputs again
-					//TODO over here
-					/*if (knob is NodeInput)
-						clonedNode.Inputs.Add (knob as NodeInput);
-					else if (knob is NodeOutput) 
-						clonedNode.Outputs.Add (knob as NodeOutput);*/
 				}
 			}
 

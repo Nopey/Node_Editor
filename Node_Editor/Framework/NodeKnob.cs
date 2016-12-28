@@ -275,13 +275,5 @@ namespace NodeEditorFramework
 		}
 
 		#endregion
-
-		#region Utility
-
-		public virtual Node GetNodeAcrossConnection()
-		{
-			return null;
-		}
-		#endregion
 	}
 }

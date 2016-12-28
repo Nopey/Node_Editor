@@ -5,6 +5,7 @@ namespace NodeEditorFramework {
 	/// <summary>
 	/// Defines rules for when you can and cannot make a connection to this knob.
 	/// </summary>
+	[Serializable]
 	public abstract class ConnectionRule : ScriptableObject {
 		public ConnectionKnob knob;
 		/// <summary>

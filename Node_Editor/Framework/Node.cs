@@ -70,7 +70,7 @@ namespace NodeEditorFramework
 		/// Create the a Node of the type specified by the nodeID at position
 		/// Auto-connects the passed connectingOutput if not null to the first compatible input
 		/// </summary>
-		public static Node Create (string nodeID, Vector2 position, NodeKnob connectingOutput=null) 
+		public static Node Create (string nodeID, Vector2 position) 
 		{
 			Node node = NodeTypes.getDefaultNode (nodeID);
 			if (node == null)
@@ -83,33 +83,9 @@ namespace NodeEditorFramework
 
 			node.InitBase ();
 
-			//TODO Reimplement auto connection of output
-			/*if (connectingOutput != null)
-			{ // Handle auto-connection and link the output to the first compatible input
-				foreach (NodeKnob input in node.nodeKnobs)
-				{
-					if (input.TryApplyConnection (connectingOutput))
-						break;
-				}
-			}*/
-
 			NodeEditorCallbacks.IssueOnAddNode (node);
 
 			return node;
-		}//*/
-
-		/// <summary>
-		/// Makes sure this Node has migrated from the previous save version of NodeKnobs to the current mixed and generic one
-		/// </summary>
-		//TODO Consider reimplementing it
-		internal void CheckNodeKnobMigration () 
-		{ // TODO: Migration from previous NodeKnob system; Remove later on
-			/*if (nodeKnobs.Count == 0 && (Inputs.Count != 0 || Outputs.Count != 0)) 
-			{
-				nodeKnobs.AddRange (Inputs.Cast<NodeKnob> ());
-				nodeKnobs.AddRange (Outputs.Cast<NodeKnob> ());
-			}
-			//*/
 		}
 
 		#endregion
@@ -148,7 +124,7 @@ namespace NodeEditorFramework
 
 		#endregion
 
-		//TODO Implement CR_NoRecursion, but make sure that it allows recursion if atleast a single Node in the loop allows for recursion
+
 		/*
 		#region Node Type Properties
 
@@ -171,18 +147,6 @@ namespace NodeEditorFramework
 		/// Callback when the node is deleted
 		/// </summary>
 		protected internal virtual void OnDelete () {}
-
-		/// <summary>
-		/// Callback when the NodeInput was assigned a new connection
-		/// </summary>
-		//TODO figure out what used OnAddInputConnection and reimplement that
-		//protected internal virtual void OnAddInputConnection (NodeInput input) {}
-
-		/// <summary>
-		/// Callback when the NodeOutput was assigned a new connection (the last in the list)
-		/// </summary>
-		//TODO figure out what used OnAddOutputConnection and reimplement that
-		//protected internal virtual void OnAddOutputConnection (NodeOutput output) {}
 
 		#endregion
 
@@ -251,7 +215,6 @@ namespace NodeEditorFramework
 		/// </summary>
 		protected internal virtual void DrawKnobs () 
 		{
-			CheckNodeKnobMigration ();
 			for (int knobCnt = 0; knobCnt < nodeKnobs.Count; knobCnt++) 
 				nodeKnobs[knobCnt].DrawKnob ();
 		}
@@ -557,7 +520,7 @@ namespace NodeEditorFramework
 		}
 
 		#region Recursive Search Helpers
-		//TODO reimplement entire region with CR_Directional
+		//TODO reimplement entire region with CR_Directional and its own CR_NoRecursion
 
 		/*[NonSerialized] private List<Node> recursiveSearchSurpassed;
 		[NonSerialized] private Node startRecursiveSearchNode; // Temporary start node for recursive searches
